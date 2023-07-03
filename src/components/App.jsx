@@ -37,17 +37,24 @@ class App extends Component {
   addContact = event => {
     event.preventDefault()
     const contactId = nanoid(3)
-    this.setState({
-      contacts: [
-        ...this.state.contacts,
-        {
-          id: contactId,
-          name: this.state.name,
-          number: this.state.number
-        }
-      ]
-    })
-    this.reset()
+    const newContact = event.target.value;
+    {
+      this.state.contacts.filter(contact =>
+        contact.name.toLowerCase().includes(newContact)
+      )
+        ? alert(`${this.state.name} is already in your contacts`)
+        : this.setState({
+            contacts: [
+              ...this.state.contacts,
+              {
+                id: contactId,
+                name: this.state.name,
+                number: this.state.number
+              }
+            ]
+          })
+      this.reset()
+    }
   }
 
   reset = () => {
@@ -60,7 +67,7 @@ class App extends Component {
   handleSearch = event => {
     event.preventDefault()
     const searchName = event.target.value.toLowerCase()
-    this.setState(prevState => ({
+    this.setState(() => ({
       filter: searchName
     }))
   }
@@ -97,6 +104,7 @@ class App extends Component {
               name="number"
               autoComplete="off"
               pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
+              required
               onChange={this.handleChange}
             />
           </Label>
@@ -117,26 +125,28 @@ class App extends Component {
             />
           </Label>
           <List>
-            {this.state.contacts.filter(contact =>
-              contact.name.toLowerCase().includes(this.state.filter)
-            ).map(({name, number, id}) => {
-              return (
-                <Item key={id}>
-                  <ContactName>
-                    🪄 {name} :
-                  </ContactName>
-                  <ContactNumber>
-                    {number}
-                  </ContactNumber>
-                  <DeleteButton
-                    type="button"
-                    onClick={() => this.handleDelete(id)}
-                  >
-                    Delete
-                  </DeleteButton>
-                </Item>
+            {this.state.contacts
+              .filter(contact =>
+                contact.name.toLowerCase().includes(this.state.filter)
               )
-            })}
+              .map(({name, number, id}) => {
+                return (
+                  <Item key={id}>
+                    <ContactName>
+                      🪄 {name} :
+                    </ContactName>
+                    <ContactNumber>
+                      {number}
+                    </ContactNumber>
+                    <DeleteButton
+                      type="button"
+                      onClick={() => this.handleDelete(id)}
+                    >
+                      Delete
+                    </DeleteButton>
+                  </Item>
+                )
+              })}
           </List>
         </Section>
       </Container>
@@ -145,7 +155,6 @@ class App extends Component {
 }
 
 export default App
-
 
 // <div>
 //   <h1>Phonebook</h1>
