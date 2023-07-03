@@ -12,12 +12,18 @@ import {
   List,
   Item,
   ContactName,
-  ContactNumber
+  ContactNumber,
+  DeleteButton
 } from "./App.styled"
 
 class App extends Component {
   state = {
-    contacts: [],
+    contacts: [
+      {id: "id-1", name: "Hermione Granger", number: "459-12-56"},
+      {id: "id-2", name: "Ron Weasley", number: "443-89-12"},
+      {id: "id-3", name: "Albus Dumbledore", number: "645-17-79"},
+      {id: "id-4", name: "Harry Potter ", number: "227-91-26"}
+    ],
     filter: "",
     name: "",
     number: ""
@@ -25,7 +31,6 @@ class App extends Component {
 
   handleChange = event => {
     const {name, value} = event.target
-
     this.setState({[name]: value})
   }
 
@@ -50,6 +55,20 @@ class App extends Component {
       name: "",
       number: ""
     })
+  }
+
+  handleSearch = event => {
+    event.preventDefault()
+    const searchName = event.target.value.toLowerCase()
+    this.setState(prevState => ({
+      filter: searchName
+    }))
+  }
+
+  handleDelete = id => {
+    this.setState(prevState => ({
+      contacts: prevState.contacts.filter(contact => contact.id !== id)
+    }))
   }
 
   render() {
@@ -88,11 +107,19 @@ class App extends Component {
           <SectionTitle>Contacts</SectionTitle>
           <Label htmlFor="">
             Search 🔮
-            <Input type="text" placeholder="enter name"/>
+            <Input
+              type="search"
+              name="name"
+              autoComplete="off"
+              value={this.state.contacts.name}
+              placeholder="enter name"
+              onChange={this.handleSearch}
+            />
           </Label>
           <List>
-            {this.state.contacts.map(({name, number, id}) => {
-              console.log(this.state.contacts)
+            {this.state.contacts.filter(contact =>
+              contact.name.toLowerCase().includes(this.state.filter)
+            ).map(({name, number, id}) => {
               return (
                 <Item key={id}>
                   <ContactName>
@@ -101,7 +128,12 @@ class App extends Component {
                   <ContactNumber>
                     {number}
                   </ContactNumber>
-                  <Button type="button">Delete</Button>
+                  <DeleteButton
+                    type="button"
+                    onClick={() => this.handleDelete(id)}
+                  >
+                    Delete
+                  </DeleteButton>
                 </Item>
               )
             })}
@@ -113,3 +145,13 @@ class App extends Component {
 }
 
 export default App
+
+
+// <div>
+//   <h1>Phonebook</h1>
+//   <ContactForm ... />
+
+//   <h2>Contacts</h2>
+//   <Filter ... />
+//   <ContactList ... />
+// </div>
