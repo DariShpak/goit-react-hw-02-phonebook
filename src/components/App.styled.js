@@ -1,7 +1,7 @@
 import styled from "styled-components"
 
 export const Container = styled.div`
-  min-width: 310px;
+  max-width: 320px;
   padding: 20px;
 `
 
@@ -39,10 +39,14 @@ export const Input = styled.input`
     background: transparent;
     outline: transparent;
   }
+
+  &::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+  }
 `
 
 export const Button = styled.button`
-margin-left:33%;
+margin-left:40%;
 
   width: 95px;
   padding: 4px;
@@ -78,10 +82,23 @@ export const List = styled.ul`
 
 export const Item = styled.li`
   display: flex;
+  width: 260px;
   flex-wrap: wrap;
   margin: 0;
   gap: 10px;
 `
+export const DeleteButton = styled.button`
+width: 75px;
+  padding: 2px;
+  border-radius: 8px;
+  border: 2px solid #d3a625;
+  background: #d3a625;
+  color: #740001;
+      &: focus,
+      &: hover {
+    border: 2px solid #eeba30;
+    background:  #eeba30;
+    color:#ae0001;`
 
 export const ContactName = styled.p`
   margin-top: 0;
