@@ -1,7 +1,7 @@
 import React, {Component} from "react"
 import Form from "components/Form/Form"
 import ContactList from "./Contacts/ContactList"
-import Filter from "./Filter/Filter"
+// import Filter from "./Filter/Filter"
 import {nanoid} from "nanoid"
 
 import {Container, MainTitle, SectionTitle} from "./App.styled"
