@@ -1,9 +1,9 @@
 import React, {Component} from "react"
 import Form from "components/Form/Form"
 import ContactList from "./Contacts/ContactList"
-// import Filter from "./Filter/Filter"
+import Filter from "./Filter/Filter"
 import {nanoid} from "nanoid"
-
+import PropTypes from "prop-types"
 import {Container, MainTitle, SectionTitle} from "./App.styled"
 
 class App extends Component {
@@ -14,22 +14,30 @@ class App extends Component {
       {id: "id-3", name: "Albus Dumbledore", number: "645-17-79"},
       {id: "id-4", name: "Harry Potter ", number: "227-91-26"}
     ],
-    filter: "",
+    filter: ""
   }
 
   handleFormSubmit = ({name, number}) => {
-    const contactId = nanoid(3)
+    const existingContact = this.state.contacts.find(
+      contact => contact.name.toLowerCase() === name.toLowerCase()
+    )
 
-    this.setState({
-      contacts: [
-        ...this.state.contacts,
-        {
-          id: contactId,
-          name: name,
-          number: number
-        }
-      ]
-    })
+    if (existingContact) {
+      alert(`${name} is already in contacts.`)
+    } else {
+      const contactId = nanoid(3)
+
+      this.setState({
+        contacts: [
+          ...this.state.contacts,
+          {
+            id: contactId,
+            name: name,
+            number: number
+          }
+        ]
+      })
+    }
   }
 
   handleSearch = event => {
@@ -53,10 +61,10 @@ class App extends Component {
         <Form onSubmit={this.handleFormSubmit} />
 
         <SectionTitle>Contacts</SectionTitle>
-        <Filter contact={this.state.contacts} filter={this.state.filter} />
+        <Filter onHandleSearch={this.handleSearch} />
         <ContactList
           contacts={this.state.contacts}
-          onHandleSearch={this.handleSearch}
+          filter={this.state.filter}
           onHandleDelete={this.handleDelete}
         />
       </Container>
@@ -64,5 +72,14 @@ class App extends Component {
   }
 }
 
-export default App
+App.propTypes = {
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired
+    })
+  )
+}
 
+export default App
