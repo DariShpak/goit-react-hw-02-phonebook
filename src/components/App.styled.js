@@ -3,6 +3,8 @@ import styled from "styled-components"
 export const Container = styled.div`
   max-width: 320px;
   padding: 20px;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export const MainTitle = styled.h1`
@@ -11,7 +13,6 @@ export const MainTitle = styled.h1`
   margin-bottom: 20px;
   color: #740001;
 `
-
 
 export const Label = styled.label`
   display: flex;
