@@ -1,8 +1,9 @@
 import React from "react"
-import {ContactName, ContactNumber, Item, DeleteButton} from "./Contact.styled"
+import { DeleteButton, ContactName, ContactNumber, Item } from "./Contact.styled"
+
 import PropTypes from "prop-types"
 
-const Contact = ({name, number, onClick}) => {
+const Contact = ({name, number, onHandleDelete}) => {
   return (
     <Item>
       <ContactName>
@@ -11,16 +12,15 @@ const Contact = ({name, number, onClick}) => {
       <ContactNumber>
         {number}
       </ContactNumber>
-      <DeleteButton type="button" onClick={onClick}>
-        Delete
-      </DeleteButton>
+      <DeleteButton type="button" onClick={onHandleDelete}>Delete</DeleteButton>
     </Item>
   )
 }
+
 Contact.propTypes = {
-  onClick: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
-  number: PropTypes.string.isRequired
+  number: PropTypes.string.isRequired,
+  onHandleDelete: PropTypes.func.isRequired,
 }
 
 export default Contact
