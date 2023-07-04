@@ -1,20 +1,10 @@
 import React, {Component} from "react"
+import Form from "components/Form/Form"
+import ContactList from "./Contacts/ContactList"
+import Filter from "./Filter/Filter"
 import {nanoid} from "nanoid"
-import {
-  Container,
-  MainTitle,
-  Form,
-  Label,
-  Input,
-  Button,
-  Section,
-  SectionTitle,
-  List,
-  Item,
-  ContactName,
-  ContactNumber,
-  DeleteButton
-} from "./App.styled"
+
+import {Container, MainTitle, SectionTitle} from "./App.styled"
 
 class App extends Component {
   state = {
@@ -25,42 +15,20 @@ class App extends Component {
       {id: "id-4", name: "Harry Potter ", number: "227-91-26"}
     ],
     filter: "",
-    name: "",
-    number: ""
   }
 
-  handleChange = event => {
-    const {name, value} = event.target
-    this.setState({[name]: value})
-  }
-
-  addContact = event => {
-    event.preventDefault()
+  handleFormSubmit = ({name, number}) => {
     const contactId = nanoid(3)
-    const newContact = event.target.value;
-    {
-      this.state.contacts.filter(contact =>
-        contact.name.toLowerCase().includes(newContact)
-      )
-        ? alert(`${this.state.name} is already in your contacts`)
-        : this.setState({
-            contacts: [
-              ...this.state.contacts,
-              {
-                id: contactId,
-                name: this.state.name,
-                number: this.state.number
-              }
-            ]
-          })
-      this.reset()
-    }
-  }
 
-  reset = () => {
     this.setState({
-      name: "",
-      number: ""
+      contacts: [
+        ...this.state.contacts,
+        {
+          id: contactId,
+          name: name,
+          number: number
+        }
+      ]
     })
   }
 
@@ -82,73 +50,15 @@ class App extends Component {
     return (
       <Container>
         <MainTitle>Phonebook</MainTitle>
-        <Form onSubmit={this.addContact}>
-          <Label htmlFor="">
-            Name ⚡
-            <Input
-              type="text"
-              value={this.state.name}
-              name="name"
-              autoComplete="off"
-              pattern="^[a-zA-Zа-яА-Я]+(([' \-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$"
-              title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
-              required
-              onChange={this.handleChange}
-            />
-          </Label>
-          <Label htmlFor="">
-            Number ⚡
-            <Input
-              type="tel"
-              value={this.state.number}
-              name="number"
-              autoComplete="off"
-              pattern="\+?\d{1,4}?[ .\-\s]?\(?\d{1,3}?\)?[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,4}[ .\-\s]?\d{1,9}"
-              required
-              onChange={this.handleChange}
-            />
-          </Label>
-          <Button type="submit">Add contact</Button>
-        </Form>
+        <Form onSubmit={this.handleFormSubmit} />
 
-        <Section>
-          <SectionTitle>Contacts</SectionTitle>
-          <Label htmlFor="">
-            Search 🔮
-            <Input
-              type="search"
-              name="name"
-              autoComplete="off"
-              value={this.state.contacts.name}
-              placeholder="enter name"
-              onChange={this.handleSearch}
-            />
-          </Label>
-          <List>
-            {this.state.contacts
-              .filter(contact =>
-                contact.name.toLowerCase().includes(this.state.filter)
-              )
-              .map(({name, number, id}) => {
-                return (
-                  <Item key={id}>
-                    <ContactName>
-                      🪄 {name} :
-                    </ContactName>
-                    <ContactNumber>
-                      {number}
-                    </ContactNumber>
-                    <DeleteButton
-                      type="button"
-                      onClick={() => this.handleDelete(id)}
-                    >
-                      Delete
-                    </DeleteButton>
-                  </Item>
-                )
-              })}
-          </List>
-        </Section>
+        <SectionTitle>Contacts</SectionTitle>
+        <Filter contact={this.state.contacts} filter={this.state.filter} />
+        <ContactList
+          contacts={this.state.contacts}
+          onHandleSearch={this.handleSearch}
+          onHandleDelete={this.handleDelete}
+        />
       </Container>
     )
   }
