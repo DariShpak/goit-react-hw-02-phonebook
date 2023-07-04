@@ -1,6 +1,7 @@
 import React, {Component} from "react"
 import {ContactForm, Button, Label, Input} from "./Form.styled"
-  
+import PropTypes from "prop-types"
+
 class Form extends Component {
   state = {
     name: "",
@@ -8,13 +9,13 @@ class Form extends Component {
   }
 
   handleChange = event => {
-    const { name, value } = event.target
-    this.setState({ [name]: value })
+    const {name, value} = event.target
+    this.setState({[name]: value})
   }
 
-  addContact = event => {
+  onSubmit = event => {
     event.preventDefault()
-    this.props.onSubmit(this.state);
+    this.props.onSubmit(this.state)
     this.reset()
   }
 
@@ -27,7 +28,7 @@ class Form extends Component {
 
   render() {
     return (
-      <ContactForm onSubmit={this.addContact}>
+      <ContactForm onSubmit={this.onSubmit}>
         <Label htmlFor="">
           Name ⚡
           <Input
@@ -57,6 +58,10 @@ class Form extends Component {
       </ContactForm>
     )
   }
+}
+
+Form.propTypes = {
+  onSubmit: PropTypes.func.isRequired,
 }
 
 export default Form
