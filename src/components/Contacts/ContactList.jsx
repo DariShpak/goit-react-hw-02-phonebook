@@ -1,34 +1,34 @@
 import React from "react"
-import Contact from "./Contact"
-import {Label, Input, Section, List} from "./ContactList.styled"
+import {List} from "./ContactList.styled"
 import PropTypes from "prop-types"
+import Contact from "components/Contacts/Contact"
 
-const ContactList = ({ contacts, onHandleSearch, onHandleDelete }) => {
-  return <Section>
-      <Label htmlFor="">
-        Search 🔮
-        <Input type="search" name="name" autoComplete="off" value={contacts.name} placeholder="enter name" onChange={onHandleSearch} />
-      </Label>
+const ContactList = ({contacts, filter, onHandleDelete}) => {
+  return (
     <List>
-      
-      {contacts.map(({ name, number, id }) =>
-        <Contact
-          key={id}
-          name={name}
-          number={number}
-          onClick={() => onHandleDelete(id)}
-        />
-      )}
-
-      </List>
-    </Section>
+      {contacts
+        .filter(contact => contact.name.toLowerCase().includes(filter))
+        .map(({name, number, id}) =>
+          <Contact
+            key={id}
+            name={name}
+            number={number}
+            onHandleDelete={() => onHandleDelete(id)}
+          />
+        )}
+    </List>
+  )
 }
 
 ContactList.propTypes = {
-  contacts: PropTypes.arrayOf(PropTypes.shape({
-    id: PropTypes.string
-  })).isRequired,
-  onHandleSearch: PropTypes.func.isRequired,
+  contacts: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired
+    })
+  ).isRequired,
+  filter: PropTypes.string.isRequired,
   onHandleDelete: PropTypes.func.isRequired
 }
 
