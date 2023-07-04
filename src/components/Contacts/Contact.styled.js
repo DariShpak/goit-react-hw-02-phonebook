@@ -11,7 +11,7 @@ export const ContactName = styled.p`
   margin-top: 0;
   margin-bottom: 0;
   padding-left:0:
-margin:0;
+  margin:0;
   color: #740001;
 `
 export const ContactNumber = styled.p`
@@ -26,6 +26,7 @@ width: 75px;
   border: 2px solid #d3a625;
   background: #d3a625;
   color: #740001;
+  
       &: focus,
       &: hover {
     border: 2px solid #eeba30;
