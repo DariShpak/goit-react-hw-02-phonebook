@@ -3,19 +3,18 @@ import {List} from "./ContactList.styled"
 import PropTypes from "prop-types"
 import Contact from "components/Contacts/Contact"
 
-const ContactList = ({contacts, filter, onHandleDelete}) => {
+const ContactList = ({ contacts, onHandleDelete }) => {
+
   return (
     <List>
-      {contacts
-        .filter(contact => contact.name.toLowerCase().includes(filter))
-        .map(({name, number, id}) =>
-          <Contact
-            key={id}
-            name={name}
-            number={number}
-            onHandleDelete={() => onHandleDelete(id)}
-          />
-        )}
+      {contacts.map(({name, number, id}) =>
+        <Contact
+          key={id}
+          name={name}
+          number={number}
+          onHandleDelete={() => onHandleDelete(id)}
+        />
+      )}
     </List>
   )
 }
@@ -28,7 +27,6 @@ ContactList.propTypes = {
       number: PropTypes.string.isRequired
     })
   ).isRequired,
-  filter: PropTypes.string.isRequired,
   onHandleDelete: PropTypes.func.isRequired
 }
 
