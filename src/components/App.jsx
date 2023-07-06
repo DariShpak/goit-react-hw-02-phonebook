@@ -3,7 +3,6 @@ import Form from "components/Form/Form"
 import ContactList from "./Contacts/ContactList"
 import Filter from "./Filter/Filter"
 import {nanoid} from "nanoid"
-import PropTypes from "prop-types"
 import {Container, MainTitle, SectionTitle} from "./App.styled"
 
 class App extends Component {
@@ -12,18 +11,19 @@ class App extends Component {
       {id: "id-1", name: "Hermione Granger", number: "459-12-56"},
       {id: "id-2", name: "Ron Weasley", number: "443-89-12"},
       {id: "id-3", name: "Albus Dumbledore", number: "645-17-79"},
-      {id: "id-4", name: "Harry Potter ", number: "227-91-26"}
+      {id: "id-4", name: "Harry Potter", number: "227-91-26"}
     ],
     filter: ""
   }
 
-  handleFormSubmit = ({name, number}) => {
+  handleFormSubmit = ({ name, number }) => {
     const existingContact = this.state.contacts.find(
       contact => contact.name.toLowerCase() === name.toLowerCase()
     )
 
     if (existingContact) {
       alert(`${name} is already in contacts.`)
+      
     } else {
       const contactId = nanoid(3)
 
@@ -40,12 +40,11 @@ class App extends Component {
     }
   }
 
+ 
+
   handleSearch = event => {
-    event.preventDefault()
     const searchName = event.target.value.toLowerCase()
-    this.setState(() => ({
-      filter: searchName
-    }))
+    this.setState({filter: searchName})
   }
 
   handleDelete = id => {
@@ -55,16 +54,23 @@ class App extends Component {
   }
 
   render() {
+    const {contacts, filter} = this.state
+
+    const filteredContacts = contacts.filter(contact =>
+      contact.name.toLowerCase().includes(filter)
+    )
+
+    const displayedContacts = filter ? filteredContacts : contacts
+
     return (
       <Container>
         <MainTitle>Phonebook</MainTitle>
         <Form onSubmit={this.handleFormSubmit} />
 
         <SectionTitle>Contacts</SectionTitle>
-        <Filter onHandleSearch={this.handleSearch} />
+        <Filter filter={filter} onHandleSearch={this.handleSearch} />
         <ContactList
-          contacts={this.state.contacts}
-          filter={this.state.filter}
+          contacts={displayedContacts}
           onHandleDelete={this.handleDelete}
         />
       </Container>
