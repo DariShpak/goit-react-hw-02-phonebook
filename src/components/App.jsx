@@ -16,14 +16,13 @@ class App extends Component {
     filter: ""
   }
 
-  handleFormSubmit = ({ name, number }) => {
+  handleFormSubmit = ({name, number}) => {
     const existingContact = this.state.contacts.find(
-      contact => contact.name.toLowerCase() === name.toLowerCase()
+      contact => contact.name.toLowerCase().trim() === name.toLowerCase().trim()
     )
 
     if (existingContact) {
       alert(`${name} is already in contacts.`)
-      
     } else {
       const contactId = nanoid(3)
 
@@ -39,8 +38,6 @@ class App extends Component {
       })
     }
   }
-
- 
 
   handleSearch = event => {
     const searchName = event.target.value.toLowerCase()
